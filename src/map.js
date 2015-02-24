@@ -54,11 +54,17 @@ var Map = React.createClass({
 
       var location = new google.maps.LatLng( point.latitude , point.longitude );
 
-      var marker = new google.maps.Marker({
+      var options = {
         position: location,
         map: map,
         title: point.label
-      });
+      };
+
+      if (point.color && ['blue', 'red', 'purple', 'yellow', 'green'].indexOf(point.color) > -1) {
+        options.icon = '//maps.google.com/mapfiles/ms/icons/' + point.color + '-dot.png'
+      }
+
+      var marker = new google.maps.Marker(options);
 
       markers.push( marker );
 
@@ -100,7 +106,7 @@ var Map = React.createClass({
       if (!window.reactMapCallback) {
         // if this is the first time, load the scripts:
         var s =document.createElement('script');
-        s.src = 'https://maps.googleapis.com/maps/api/js?key=' + this.props.gmaps_api_key + '&sensor=' + this.props.gmaps_sensor + '&callback=reactMapCallback';
+        s.src = '//maps.googleapis.com/maps/api/js?key=' + this.props.gmaps_api_key + '&sensor=' + this.props.gmaps_sensor + '&callback=reactMapCallback';
         document.head.appendChild( s );
 
         // when the script has loaded, run all the callbacks
